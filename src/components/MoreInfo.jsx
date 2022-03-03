@@ -6,7 +6,7 @@ const MoreInfo = ()=>{
     const[company, setCompany] = useState({
         data: ""
     })
-    const url = 'http://laravel-companies.ddev.site/api/company/';
+    const url = 'https://example-app.ddev.site/api/company/';
       useEffect(()=>{
           fetch(`${url}${id}`)
               .then(response => response.json())
