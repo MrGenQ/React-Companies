@@ -43,12 +43,13 @@ const Login=()=>{
             alert('Pass Field is empty')
         }
 
-        axios.post("http://example-app.ddev.site/api/login/",user)
+        axios.post("http://laravel-companies.ddev.site/api/login/",user)
             .then(response => {
                 setMsg(response.data);
-                localStorage.setItem("users", response.data);
+                localStorage.setItem("users", response.data.name);
+                localStorage.setItem("userid", response.data.id);
+                localStorage.setItem("token", response.data.token);
                 history("/");
-                console.log(response.data);
             });
     }
 
@@ -61,13 +62,13 @@ const Login=()=>{
                     <h2>Sign In</h2>
                 </Grid>
                 <TextField label='Email'  name="email" value={email}  onChange={e => onInputChange(e)} placeholder='Enter Email' type='text' fullWidth required/>
-                <TextField label='Password'  name="password" value={password}  onChange={e => onInputChange(e)} placeholder='Enter password' type='text' fullWidth required/>
+                <TextField label='Password'  name="password" value={password}  onChange={e => onInputChange(e)} placeholder='Enter password' type='password' fullWidth required/>
 
                 <Button type='submit' onClick={signIn} color='primary' variant="contained" style={btnstyle} fullWidth>Sign in</Button>
 
                 <Typography style={{textAli:'center'}}> Don't Have Account ?
-                    <NavLink to="/register">
-                        <span style={{marginLeft:"60px"}}>Register</span>
+                    <NavLink to="/signup">
+                        <span style={{marginLeft:"60px"}}>Sing up</span>
                     </NavLink>
                     <NavLink to="/">
                         <span style={{marginLeft:"4px"}}>Home</span>

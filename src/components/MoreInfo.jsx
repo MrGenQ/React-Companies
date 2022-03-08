@@ -6,20 +6,20 @@ const MoreInfo = ()=>{
     const[company, setCompany] = useState({
         data: ""
     })
-    const url = 'https://example-app.ddev.site/api/company/';
-      useEffect(()=>{
-          fetch(`${url}${id}`)
-              .then(response => response.json())
-              .then(data=>{
-                  setCompany(data)
-              })
-              .catch(error => {
-                  throw(error);
-              })
-      },[setCompany, id])
+    const url = 'http://laravel-companies.ddev.site/api/company/';
+    useEffect(()=>{
+        fetch(`${url}${id}`)
+            .then(response => response.json())
+            .then(data=>{
+                setCompany(data)
+            })
+            .catch(error => {
+                throw(error);
+            })
+    },[setCompany, id])
     return(
         <Container>
-            <Card style={{ width: '25rem', backgroundColor: "yellow" }}>
+            <Card style={{ width: '25rem' }}>
                 <Card.Body>
                     <Card.Title>{company.data.company}</Card.Title>
                     <Card.Text>
@@ -33,7 +33,6 @@ const MoreInfo = ()=>{
                     </Card.Footer>
                 </Card.Body>
             </Card>
-            <div ><Link to={`/`} style={{backgroundColor: "lightblue"}}>Home</Link></div>
         </Container>
     )
 }

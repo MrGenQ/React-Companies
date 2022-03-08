@@ -1,30 +1,40 @@
-import {Navbar, Nav, Container} from "react-bootstrap";
+import {Navbar, Nav, Container, Dropdown, ButtonGroup} from "react-bootstrap";
 import {useNavigate, useParams} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Button} from "@material-ui/core";
 
 const Navigation = () =>{
+    const [user, setUser] = useState("");
     const {users} = useParams();
-    let history = useNavigate();
-
-    const user = localStorage.getItem('users');
-    console.log(user);
-
     const logout = () =>
     {
         localStorage.removeItem("users")
-        history("/login");
     }
+    useEffect(()=>{
+        setUser(localStorage.getItem('users'));
+
+    },[user])
+
     return (
         <>
             <Navbar bg="dark" variant="dark">
                 <Container>
                     <Navbar.Brand href="/">Home</Navbar.Brand>
-                    <Nav className="me-auto">
-                        <Nav.Link href="/login">Login</Nav.Link>
-                        <Nav.Link href="/register">Register</Nav.Link>
-                    </Nav>
+                    {!user == "" ? (
+                            <Nav className="me-auto">
+                                <Nav.Link href="/" onClick={logout}>Logout</Nav.Link>
+                                <Nav.Link href="/add-company">Add Company</Nav.Link>
+                            </Nav>
+                        ) :
+                        <Nav className="me-auto">
+                            <Nav.Link href="/login">Login</Nav.Link>
+                            <Nav.Link href="/signup">Register</Nav.Link>
+                        </Nav>
+                    }
+
                 </Container>
             </Navbar>
-            </>
+        </>
 
 
     )

@@ -6,7 +6,8 @@ import { Button} from '@material-ui/core'
 import { useNavigate, useParams } from "react-router-dom";
 
 
-const Main = ()=>{
+const Main = (props)=>{
+
     const paperStyle={padding :20,height:'70vh',width:280, margin:"20px auto"}
     const avatarStyle={backgroundColor:'#3370bd'}
 
@@ -14,40 +15,24 @@ const Main = ()=>{
     let history = useNavigate();
 
     const user = localStorage.getItem('users');
-    console.log(user);
 
-    const logout = () =>
-    {
-        localStorage.removeItem("users")
-        history("/login");
-    }
     const[companies, setCompanies] = useState("")
     useEffect(()=>{
-        fetch('https://example-app.ddev.site/api/companies')
+        fetch('http://laravel-companies.ddev.site/api/companies')
             .then(response => response.json())
             .then(data=>{
                 setCompanies(data)
                 console.log(data)
             })
+
             .catch(error => {
                 throw(error);
             })
     },[setCompanies])
+    console.log(props.update)
     return(
         <>
             <Container>
-                {!user === '' ? (
-                    <Row>
-                        <Col><h4>{user}</h4></Col>
-                        <Col><Button type='submit' className='mt-3' onClick={logout} color='primary' variant="contained"  style={{textAlign: 'right'}}>Logout</Button></Col>
-                    </Row>
-                ) : (
-                    <div style={{textAlign: 'right'}} className=''>
-                        <a className="btn btn-primary m-2" href="/register">Register</a>
-                        <a className="btn btn-primary" href="/login">Login</a>
-                    </div>
-
-                )}
 
                 <Table striped bordered hover>
                     <thead>
@@ -57,6 +42,7 @@ const Main = ()=>{
                         <th>Address</th>
                         <th>Director</th>
                         <th>More...</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
