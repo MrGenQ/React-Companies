@@ -5,15 +5,17 @@ import Col from 'react-bootstrap/Col';
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios';
 import {Container, Navbar, Nav, NavDropdown, Dropdown, ButtonGroup, DropdownButton} from "react-bootstrap";
-import { Grid,Paper, Avatar, TextField, Button} from '@material-ui/core';
+import {Grid, Paper, Avatar, TextField, Button, FormControl} from '@material-ui/core';
 import Main from "./Main";
+import Category from "./Category";
 const UpdateCompany = () =>{
     const paperStyle={padding :30,height:'630px',width:600, margin:"30px auto"}
     const avatarStyle={backgroundColor:'#3370bd'}
     const token = localStorage.getItem("token");
-    console.log(token);
+    const [categories, setCategories] = useState({
+        data: ""
+    })
     const user = localStorage.getItem("users");
-
     const navigate = useNavigate();
 
     const { id } = useParams()
@@ -31,7 +33,18 @@ const UpdateCompany = () =>{
     useEffect(()=>{
         getCompany()
     },[])
+    useEffect(()=>{
+        fetch('http://laravel-companies.ddev.site/api/category')
+            .then(response => response.json())
+            .then(data=>{
+                setCategories(data)
+                console.log(data)
+            })
 
+            .catch(error => {
+                throw(error);
+            })
+    },[setCategories])
     const getCompany = async () => {
         await axios.get(`http://laravel-companies.ddev.site/api/company/${id}`).then(({data})=>{
             setCompany(data.data.company);
@@ -65,7 +78,7 @@ const UpdateCompany = () =>{
                 }*/
             })
     }
-
+    console.log(categories.data)
     return (
         <div className="container">
 
@@ -171,9 +184,16 @@ const UpdateCompany = () =>{
                                 <Col>
                                     <Form.Group>
                                         <Form.Label>Category</Form.Label>
-                                        <Form.Control type="text" value={category} onChange={(event)=>{
-                                            setCategory(event.target.value)
-                                        }}/>
+                                        <FormControl fullWidth>
+                                            <select
+                                                type="text" value={category} onChange={(event)=>{
+                                                setCategory(event.target.value)
+                                            }}
+                                            >
+                                                <option value="" selected disabled></option>
+                                                {(categories.data.length)? categories.data.map((w)=><Category key={w.id} id={w.id} category={w.category}/>):null}
+                                            </select>
+                                        </FormControl>
                                     </Form.Group>
                                 </Col>
                             </Row>

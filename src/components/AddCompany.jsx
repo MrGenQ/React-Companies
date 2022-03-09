@@ -7,7 +7,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useNavigate, useParams } from "react-router-dom";
 import {Nav} from "react-bootstrap";
 import {FormControl} from "@material-ui/core";
-
+import category from "./Category";
 
 const AddCompany = ()=>{
 
@@ -143,4 +143,8 @@ const AddCompany = ()=>{
     );
 
 }
-export default AddCompany
+export default (
+    AddCompany
+)
+
+
