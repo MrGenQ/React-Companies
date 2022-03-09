@@ -19,9 +19,9 @@ const MoreInfo = ()=>{
     },[setCompany, id])
     return(
         <Container>
-            <Card style={{ width: '25rem' }}>
+            <Card style={{padding :30,height:300,width:500, margin:"30px auto"}}>
                 <Card.Body>
-                    <Card.Title>{company.data.company}</Card.Title>
+                    <Card.Title><h2>{company.data.company}</h2></Card.Title>
                     <Card.Text>
                         <div>Code: {company.data.code}</div>
                         <div>VAT: {company.data.vat}</div>

@@ -29,7 +29,6 @@ const Main = (props)=>{
                 throw(error);
             })
     },[setCompanies])
-    console.log(props.update)
     return(
         <>
             <Container>
@@ -46,7 +45,15 @@ const Main = (props)=>{
                     </tr>
                     </thead>
                     <tbody>
-                    {(companies.data)?companies.data.map((w)=><RenderCompanies key={w.id} id={w.id} code={w.code} company={w.company} address={w.address} director={w.director}/>):null}
+                    {(companies.data)?companies.data.map((w)=><RenderCompanies key={w.id}
+                                                                               id={w.id}
+                                                                               code={w.code}
+                                                                               company={w.company}
+                                                                               address={w.address}
+                                                                               director={w.director}
+                                                                               userid={w.user}
+                                                                               email={localStorage.getItem('email')}
+                                                                               />):null}
                     </tbody>
                 </Table>
 

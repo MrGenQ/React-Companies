@@ -12,7 +12,6 @@ import category from "./Category";
 const AddCompany = ()=>{
 
     const paperStyle={padding :30,height:'550px',width:500, margin:"30px auto"}
-    const avatarStyle={backgroundColor:'#3370bd'}
     const [category, setCategory] = useState({
         data: ""
     })
@@ -38,7 +37,6 @@ const AddCompany = ()=>{
             .then(response => response.json())
             .then(data=>{
                 setCategory(data)
-                console.log(data)
             })
 
             .catch(error => {
@@ -51,13 +49,13 @@ const AddCompany = ()=>{
     const onInputChange= e => {
         setCompany({...companies, [e.target.name]: e.target.value });
     };
-    console.log(companies);
     async function addCompany()
     {
+        setErrors('')
         await axios.post("http://laravel-companies.ddev.site/api/add-company",companies)
             .then((response)=>{
-                console.log(response.data)
-                setErrors(response.data)
+                console.log(response.data.error)
+                setErrors(response.data.error)
         });
         setCompany({
             company: '',
@@ -69,15 +67,14 @@ const AddCompany = ()=>{
             description: '',
             user_id: ''});
     }
-    console.log(category.data['category'])
     return (
         <>
             {!user == "" ? (
                     <Grid>
                         {
-                            Object.keys(errors).length > 0 && errors[0] != "Company created succesfully" && (
+                            (Object.keys(errors).length > 0 && (errors != 'Company created successfully'))?  (
                                 <Grid>
-                                    <Paper style={{padding :30, width:600, margin:"30px auto"}}>
+                                    <Paper style={{padding :30, width:500, margin:"30px auto"}}>
                                         <div className="alert alert-danger">
                                             {
                                                 Object.entries(errors).map(([key, value])=>(
@@ -86,21 +83,16 @@ const AddCompany = ()=>{
                                             }
                                         </div>
                                     </Paper>
-                                </Grid>)
-                        }
-                        {
-                            Object.keys(errors).length > 0 && errors[0] == "Company created succesfully" && (
+                                </Grid>): (errors == 'Company created successfully')?
                                 <Grid>
-                                    <Paper style={{padding :30, width:600, margin:"30px auto"}}>
+                                    <Paper style={{padding :30, width:500, margin:"30px auto"}}>
                                         <div className="alert alert-success">
                                             {
-                                                Object.entries(errors).map(([key, value])=>(
-                                                    <div key={key}>{value}</div>
-                                                ))
+                                                errors
                                             }
                                         </div>
                                     </Paper>
-                                </Grid>)
+                                </Grid>:null
                         }
                         <Paper style={paperStyle}>
                             <Grid align='center'>
@@ -113,15 +105,19 @@ const AddCompany = ()=>{
                             <TextField label='Director'  name="director" value={director}  onChange={e => onInputChange(e)} type='text' fullWidth required/>
                             <TextField label='Description'  name="description" value={description}  onChange={e => onInputChange(e)} type='text' fullWidth required/>
 
-                            <FormControl fullWidth>
-                                <label id="demo-simple-select-label">Category</label>
+                            <FormControl fullWidth style={{paddingTop: 20}}>
                                 <select
                                     id="demo-simple-select"
                                     value={category_id}
                                     name="category_id"
                                     onChange={e => onInputChange(e)}
+                                    style={{
+                                        backgroundColor: '#ffffff',
+                                        borderRadius: 4,
+                                        height: 38,
+                                    }}
                                 >
-                                    <option value="" selected disabled></option>
+                                    <option value="" selected disabled>Category</option>
                                     {(category.data.length)? category.data.map((w)=><Category key={w.id} id={w.id} category={w.category}/>):null}
                                 </select>
                             </FormControl>

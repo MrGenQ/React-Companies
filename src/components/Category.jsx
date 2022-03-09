@@ -1,5 +1,3 @@
-import {MenuItem} from "@material-ui/core";
-
 const Category = (props) =>{
     return (
 

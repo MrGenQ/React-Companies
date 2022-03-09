@@ -12,7 +12,7 @@ const Login=()=>{
     const avatarStyle={backgroundColor:'#3370bd'}
     const btnstyle={margin:'8px 0'}
 
-    const [msg,setMsg] = useState('');
+    const [errors,setError] = useState('');
 
     const [username, setUsername] = useState("");
     const [pass, setPass] = useState("");
@@ -45,10 +45,12 @@ const Login=()=>{
 
         axios.post("http://laravel-companies.ddev.site/api/login/",user)
             .then(response => {
-                setMsg(response.data);
+                setError(response.data.message);
                 localStorage.setItem("users", response.data.name);
                 localStorage.setItem("userid", response.data.id);
                 localStorage.setItem("token", response.data.token);
+                localStorage.setItem("email", response.data.email);
+                console.log(response.data.message)
                 history("/");
             });
     }
@@ -61,6 +63,7 @@ const Login=()=>{
                     <Avatar style={avatarStyle}><LockOutlinedIcon/></Avatar>
                     <h2>Sign In</h2>
                 </Grid>
+                {errors}
                 <TextField label='Email'  name="email" value={email}  onChange={e => onInputChange(e)} placeholder='Enter Email' type='text' fullWidth required/>
                 <TextField label='Password'  name="password" value={password}  onChange={e => onInputChange(e)} placeholder='Enter password' type='password' fullWidth required/>
 

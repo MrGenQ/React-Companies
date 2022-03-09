@@ -4,13 +4,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios';
-import {Container, Navbar, Nav, NavDropdown, Dropdown, ButtonGroup, DropdownButton} from "react-bootstrap";
 import {Grid, Paper, Avatar, TextField, Button, FormControl} from '@material-ui/core';
-import Main from "./Main";
 import Category from "./Category";
 const UpdateCompany = () =>{
     const paperStyle={padding :30,height:'630px',width:600, margin:"30px auto"}
-    const avatarStyle={backgroundColor:'#3370bd'}
     const token = localStorage.getItem("token");
     const [categories, setCategories] = useState({
         data: ""
@@ -186,6 +183,11 @@ const UpdateCompany = () =>{
                                         <Form.Label>Category</Form.Label>
                                         <FormControl fullWidth>
                                             <select
+                                                style={{
+                                                    backgroundColor: '#ffffff',
+                                                    borderRadius: 4,
+                                                    height: 38,
+                                                }}
                                                 type="text" value={category} onChange={(event)=>{
                                                 setCategory(event.target.value)
                                             }}

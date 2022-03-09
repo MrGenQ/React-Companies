@@ -4,10 +4,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Link, NavLink } from "react-router-dom";
 import {useState} from 'react';
 import axios from 'axios';
+import navigation from "./Navigation";
 
 const Signup=()=>{
 
-    const paperStyle={padding :20,height:'70vh',width:280, margin:"20px auto"}
+    const paperStyle={padding :20,minheight:450,width:350, margin:"20px auto"}
     const avatarStyle={backgroundColor:'#3370bd'}
     const btnstyle={margin:'8px 0'}
 
@@ -25,19 +26,52 @@ const Signup=()=>{
 
     async function  signup()
     {
-        let result = await axios.post("http://laravel-companies.ddev.site/api/register",user);
-        setErrors('Registration Successful')
+        await axios.post("http://laravel-companies.ddev.site/api/register",user)
+        .then(response => {
+            console.log(response.data.error)
+            localStorage.setItem("users", response.data.name);
+            localStorage.setItem("userid", response.data.id);
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("email", response.data.email);
+            setErrors(response.data.error)
+        });
+
         setUser({name:"",email:"",password:""}) // To Clear all fields
 
     }
 
     return(
+        <>
+            {
+                (Object.keys(errors).length > 0 && (errors != 'Signup complete'))?  (
+                    <Grid>
+                        <Paper style={{padding :30, width:350, margin:"30px auto"}}>
+                            <div className="alert alert-danger">
+                                {
+                                    Object.entries(errors).map(([key, value])=>(
+                                        <div key={key}>{value}</div>
+                                    ))
+                                }
+                            </div>
+                        </Paper>
+                    </Grid>): (errors == 'Signup complete')?
+                    <Grid>
+                        <Paper style={{padding :30, width:350, margin:"30px auto"}}>
+                            <div className="alert alert-success">
+                                {
+                                    errors
+                                }
+                            </div>
+                        </Paper>
+                    </Grid>:null
+            }
+
         <Grid>
             <Paper elevation={10} style={paperStyle}>
                 <Grid align='center'>
                     <Avatar style={avatarStyle}><LockOutlinedIcon/></Avatar>
                     <h2>Sign Up</h2>
-                    <h3 style={{color:"green"}}>{errors}</h3>
+
                 </Grid>
 
                 <TextField label='Name' name="name" value={name} onChange={e => onInputChange(e)} placeholder='Enter Name' type='text' fullWidth required/>
@@ -53,6 +87,7 @@ const Signup=()=>{
                 </Typography>
             </Paper>
         </Grid>
+        </>
     )
 }
 
